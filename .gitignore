@@ -1,0 +1,10 @@
+
+venv/
+
+*.pyc
+
+.vscode/
+
+rss-reader.code-workspace
+
+.env
