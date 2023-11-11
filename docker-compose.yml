@@ -1,0 +1,50 @@
+version: '3'
+
+services:
+
+    redis:
+        container_name: redis
+        image: redis:7.0.7
+        privileged: true
+        restart: always
+        volumes:
+            - ./redis-data:/data
+        ports:
+            - "::6379:6379"
+        networks:
+            testing_net:
+                ipv4_address: 172.18.0.10
+
+    postgres:
+        container_name: postgres
+        image: postgres:12-alpine
+        volumes:
+            - ./postgres-data:/var/lib/postgresql/data
+        privileged: true
+        restart: always
+        environment:
+            - POSTGRES_PASSWORD=postgres
+            - POSTGRES_DB=db
+        ports:
+            - "::5432:5432"
+        networks:
+            testing_net:
+                ipv4_address: 172.18.0.11
+
+    mongo:
+        image: mongo:6
+        container_name: mongo
+        ports:
+            - "27017:27017"
+        volumes:
+            - ./mongo-data:/data
+        networks:
+            testing_net:
+                ipv4_address: 172.18.0.12
+
+networks:
+    testing_net:
+        ipam:
+            driver: default
+            config:
+                - subnet: 172.18.0.2/16
