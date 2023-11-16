@@ -10,7 +10,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
-from celery.schedules import crontab
 from pathlib import Path
 import os
 
@@ -60,6 +59,7 @@ AUTH_USER_MODEL = "accounts.User"
 """
 Celery Configurations
 """
+CELERY_IMPORTS = ("billing.tasks", "accounts.tasks", "services.tasks", "audit.tasks", "middleware.tasks")
 BROKER_URL = "redis://localhost:6379"
 CELERY_BROKER_URL = "redis://localhost:6379"
 CELERY_RESULT_BACKEND = "redis://localhost:6379"
@@ -68,11 +68,11 @@ CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
 CELERYBEAT_SCHEDULER = "djcelery.schedulers.DatabaseScheduler"
 CELERY_TIMEZONE = "Africa/Cairo"
-CELERYBEAT_SCHEDULE = {
-    # 'daily_registration_notification': {
-    #     'task': 'website.tasks.send_daily_registration_notification_task.send_daily_registration_notification',
-    #     'schedule':  crontab(hour='0', minute='0', day_of_week='mon,tue,wed,thu,fri,sat,sun'),
-    # }
+CELERYBEAT_SCHEDULE: dict = {
+    "refresh_rss_feed": {
+        "task": "rss.tasks.RSSFeedRefreshTask",
+        "schedule": 60,     # every 1 minute
+    },
 }
 
 ROOT_URLCONF = "rss_reader.urls"
@@ -147,7 +147,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_TOKEN_EXPIRY_SECONDS = 600     # 10 mins
 REFRESH_TOKEN_EXPIRY_SECONDS = 1800     # 30 mins
 
-# MongoDB Configuration
+# MongoDB configs
 MONGO_DB_HOST=os.environ.get("MONGO_DB_HOST")
 MONGO_DB_PORT=int(os.environ.get("MONGO_DB_PORT", "27017"))
 MONGO_DB_USERNAME=os.environ.get("MONGO_DB_USERNAME")
