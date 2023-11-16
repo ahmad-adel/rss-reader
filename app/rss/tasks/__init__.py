@@ -1,1 +1,1 @@
-from .rss_feed_refresher import RSSFeedRefreshTask
+from .rss_feed_refresh import RSSFeedRefreshTask
