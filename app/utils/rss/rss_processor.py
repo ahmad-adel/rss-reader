@@ -47,6 +47,7 @@ class RSSProcessor:
             feed (RSSFeed): _description_
             last_fetch (datetime.datetime): _description_
         """
+        feed.last_fetch = last_fetch
         feed.failure_counter += 1
 
         if feed.failure_counter == 1:
@@ -98,9 +99,7 @@ class RSSProcessor:
             entries (list[dict]): list of entries (posts) fetched from RSS service
         """
         for entry in entries:
-            print("creating db entry")
             post, created = RSSPost.objects.get_or_create(feed=feed, guid=entry["id"])
-            print("inserting or updating mongo")
             if created:
                 RSSPostManagerInstance.insert(post.pk, entry)
             else:
