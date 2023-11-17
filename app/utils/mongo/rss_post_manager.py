@@ -20,15 +20,15 @@ class RSSPostManager:
         collection = db[self.collection_name]
         return collection
 
-    def insert(self, guid: str, data: dict):
+    def insert(self, post_pk: int, data: dict) -> None:
         obj = {
-            "guid": guid,
+            "pk": str(post_pk),
             "data": data,
         }
         self.collection.insert_one(obj)
 
-    def fetch(self, guid: str) -> dict:
-        query = {"guid": guid}
+    def fetch(self, post_pk: int) -> dict:
+        query = {"pk": str(post_pk)}
         data_obj = self.collection.find(query)
         
         data_list = [document["data"] for document in data_obj]
@@ -38,8 +38,13 @@ class RSSPostManager:
         else:
             return {}
 
-    def bulk_delete(self, guid_list: list[str]) -> None:
-        query = {'guid':{'$in': guid_list}}
+    def update_one(self, post_pk: int, data: dict) -> None:
+        query = {"post_id": str(post_pk)}
+        self.collection.update_one(query,{"$set":{"data": data}})
+
+    def bulk_delete(self, post_pk_list: list[int]) -> None:
+        post_pk_strs = [str(pk) for pk in post_pk_list]
+        query = {'post_id':{'$in': post_pk_strs}}
         self.collection.deleteMany(query)
 
 
