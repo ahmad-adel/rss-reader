@@ -1,0 +1,11 @@
+upstream django {
+    server unix:///home/ubuntu/code/app/uwsgi.sock; # for a file socket
+}
+
+server {
+    listen       80 default_server;
+    location / {
+        include /home/ubuntu/code/uwsgi_params; # the uwsgi_params file you installed
+        uwsgi_pass  django;
+    }
+}

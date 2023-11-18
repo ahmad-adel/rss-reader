@@ -6,18 +6,9 @@ RUN apt-get update && \
     apt-get install -y --fix-missing \
     nano \
     build-essential \
-    cmake \
-    gfortran \
     git \
     wget \
     curl \
-    graphicsmagick \
-    libgraphicsmagick1-dev \
-    libavcodec-dev \
-    libavformat-dev \
-    libgtk2.0-dev \
-    libjpeg-dev \
-    liblapack-dev \
     libswscale-dev \
     pkg-config \
     python3-dev \
@@ -26,14 +17,10 @@ RUN apt-get update && \
     python3-numpy \
     software-properties-common \
     zip \
+    nginx \
     supervisor \
-    redis-server \
-    poppler-utils && \
-    pip3 install -U pip setuptools && \
+    redis-server && \
     pip3 install uwsgi
-
-#REDIS Configs
-RUN echo "vm.overcommit_memory = 1" > /etc/sysctl.conf
 
 COPY supervisor-app.conf /etc/supervisor/conf.d/
 
@@ -46,10 +33,12 @@ COPY . /home/ubuntu/code/
 RUN chmod 777 -R /home/ubuntu/code/
 RUN mkdir -p /home/ubuntu/logs
 
+COPY nginx-configs/default /etc/nginx/sites-available/default
+
 ENV LC_ALL=C.UTF-8
 ENV LANG=C.UTF-8
 
-EXPOSE 8080
+EXPOSE 80
 
 ENV DJANGO_SETTINGS_MODULE='rss_reader.settings'
 ENV CELERYD_CHDIR='/home/ubuntu/code/app'
