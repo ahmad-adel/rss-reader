@@ -72,7 +72,7 @@ CELERYBEAT_SCHEDULER = "djcelery.schedulers.DatabaseScheduler"
 CELERY_TIMEZONE = "Africa/Cairo"
 CELERYBEAT_SCHEDULE: dict = {
     "refresh_rss_feed": {
-        "task": "rss.tasks.RSSFeedRefreshTask",
+        "task": "rss.tasks.rss_feed_refresh.RSSFeedRefreshTask",
         "schedule": 60,     # every 1 minute
     },
 }
