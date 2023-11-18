@@ -44,7 +44,7 @@ class RSSPostManager:
     def bulk_delete(self, post_pk_list: list[int]) -> None:
         post_pk_strs = [str(pk) for pk in post_pk_list]
         query = {'pk':{'$in': post_pk_strs}}
-        self.collection.deleteMany(query)
+        self.collection.delete_many(query)
 
 
 RSSPostManagerInstance = RSSPostManager()
