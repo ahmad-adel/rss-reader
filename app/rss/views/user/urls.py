@@ -1,5 +1,5 @@
 from .login.urls import urlpatterns as login_urlpatterns
-from .refresh.urls import urlpatterns as refresh_urlpatterns
+from .refresh_token.urls import urlpatterns as refresh_urlpatterns
 from .register.urls import urlpatterns as register_urlpatterns
 
 urlpatterns = []

@@ -1,28 +1,34 @@
 from django.http import JsonResponse
-from rest_framework import generics, serializers
+from rest_framework import generics
 from rest_framework.parsers import JSONParser
 from rest_framework.permissions import IsAuthenticated
 
-from .interface import ListInterface
-from .serializer import ListSerializer
+from .serializer import PostReadStatusSerializer
+from .interface import PostReadStatusInterface
 from utils.interface_exception import InterfaceException
 from utils.authentication.api_token import APITokenAuthentication
 
 
-class ListView(generics.RetrieveAPIView):
+class PostReadStatusView(generics.GenericAPIView):
     permission_classes = (IsAuthenticated,)
     authentication_classes = [APITokenAuthentication,]
-    serializer_class = ListSerializer
     parser_classes = (JSONParser,)
-    interface_class = ListInterface
+    serializer_class = PostReadStatusSerializer
+    interface_class = PostReadStatusInterface
 
-    def get(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         response = {}
         user = request.user
+        serializer = self.serializer_class(data=request.data)
+
+        if not serializer.is_valid():
+            response['message'] = "Please check the format of passed parameters and try again."
+            response['errors'] = serializer.errors
+            return JsonResponse(response, status=400)
 
         try:
             interface = self.interface_class(user)
-            response = interface.call()
+            response = interface.call(serializer.validated_data)
             return JsonResponse(response, status=200)
 
         except InterfaceException as ex:
