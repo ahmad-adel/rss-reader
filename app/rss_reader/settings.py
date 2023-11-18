@@ -59,7 +59,7 @@ AUTH_USER_MODEL = "accounts.User"
 """
 Celery Configurations
 """
-CELERY_IMPORTS = ("billing.tasks", "accounts.tasks", "services.tasks", "audit.tasks", "middleware.tasks")
+CELERY_IMPORTS = ("rss.tasks")
 BROKER_URL = "redis://localhost:6379"
 CELERY_BROKER_URL = "redis://localhost:6379"
 CELERY_RESULT_BACKEND = "redis://localhost:6379"
