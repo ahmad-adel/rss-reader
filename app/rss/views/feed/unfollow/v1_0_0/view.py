@@ -3,18 +3,18 @@ from rest_framework import generics
 from rest_framework.parsers import JSONParser
 from rest_framework.permissions import IsAuthenticated
 
-from .serializer import FollowSerializer
-from .interface import FollowInterface
+from .serializer import UnfollowSerializer
+from .interface import UnfollowInterface
 from utils.interface_exception import InterfaceException
 from utils.authentication.api_token import APITokenAuthentication
 
 
-class FollowView(generics.GenericAPIView):
+class UnfollowView(generics.GenericAPIView):
     permission_classes = (IsAuthenticated,)
     authentication_classes = [APITokenAuthentication,]
     parser_classes = (JSONParser,)
-    serializer_class = FollowSerializer
-    interface_class = FollowInterface
+    serializer_class = UnfollowSerializer
+    interface_class = UnfollowInterface
 
     def post(self, request, *args, **kwargs):
         response = {}
