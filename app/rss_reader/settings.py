@@ -151,8 +151,8 @@ AUTH_TOKEN_EXPIRY_SECONDS = 600     # 10 mins
 REFRESH_TOKEN_EXPIRY_SECONDS = 1800     # 30 mins
 
 # MongoDB configs
-MONGO_DB_HOST=os.environ.get("MONGO_DB_HOST")
-MONGO_DB_PORT=int(os.environ.get("MONGO_DB_PORT", "27017"))
-MONGO_DB_USERNAME=os.environ.get("MONGO_DB_USERNAME")
-MONGO_DB_PASSWORD=os.environ.get("MONGO_DB_PASSWORD")
-MONGO_DB_NAME=os.environ.get("MONGO_DB_NAME")
+MONGO_DB_HOST = os.environ.get("MONGO_DB_HOST")
+MONGO_DB_PORT = int(os.environ.get("MONGO_DB_PORT", "27017"))
+MONGO_DB_USERNAME = os.environ.get("MONGO_DB_USERNAME")
+MONGO_DB_PASSWORD = os.environ.get("MONGO_DB_PASSWORD")
+MONGO_DB_NAME = os.environ.get("MONGO_DB_NAME")

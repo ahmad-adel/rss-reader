@@ -39,7 +39,8 @@ class LoginTestCase(TestCase):
         )
         self.assertEqual(response.status_code, 422)
         data = response.json()
-        self.assertEqual(data['message'], "Authentication Failed. Please check your credentials.")
+        self.assertEqual(
+            data['message'], "Authentication Failed. Please check your credentials.")
 
     def test_incorrect_password(self):
         body = {
@@ -53,4 +54,5 @@ class LoginTestCase(TestCase):
         )
         self.assertEqual(response.status_code, 422)
         data = response.json()
-        self.assertEqual(data['message'], "Authentication Failed. Please check your credentials.")
+        self.assertEqual(
+            data['message'], "Authentication Failed. Please check your credentials.")

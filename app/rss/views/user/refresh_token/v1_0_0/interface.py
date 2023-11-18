@@ -19,7 +19,7 @@ class RefreshInterface:
                 access_token (str): user's access token.
                 refresh_token (str): user's refresh token.
         """
-        
+
         refresh_token = serializer_data['refresh_token']
 
         try:
@@ -36,7 +36,7 @@ class RefreshInterface:
 
         data = self._process_tokens(user)
         return data
-    
+
     def _process_tokens(self, user: User) -> dict:
         """Revoke any old tokens, and generates a new pair.
 

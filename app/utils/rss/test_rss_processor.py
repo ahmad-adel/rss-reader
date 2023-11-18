@@ -12,6 +12,8 @@ from utils.rss.rss_processor import RSSProcessor
 
 # Mock MongoDB manager
 MongoClient = mongomock.MongoClient
+
+
 class MockRSSPostManager(RSSPostManager):
     def __init__(self) -> None:
         self.collection = mongomock.MongoClient().db.collection
@@ -55,11 +57,13 @@ class TestRSSProcessorView(TestCase):
         self.assertEqual(feed.description, "description")
         self.assertEqual(
             feed.updated,
-            datetime.datetime(year=1990, month=1, day=1, hour=1, minute=1, second=1, tzinfo=timezone.utc)
+            datetime.datetime(year=1990, month=1, day=1, hour=1,
+                              minute=1, second=1, tzinfo=timezone.utc)
         )
         self.assertNotEqual(feed.next_fetch, None)
         self.assertNotEqual(feed.last_fetch, None)
-        self.assertEqual(feed.next_fetch, feed.last_fetch + datetime.timedelta(minutes=5))
+        self.assertEqual(feed.next_fetch, feed.last_fetch +
+                         datetime.timedelta(minutes=5))
 
         # Posts processed
         posts = RSSPost.objects.filter(feed=feed)
@@ -67,7 +71,8 @@ class TestRSSProcessorView(TestCase):
         self.assertEqual(posts[0].guid, "post_id")
         self.assertEqual(
             posts[0].published,
-            datetime.datetime(*self.feed_data["entries"][0]["published_parsed"][:6], tzinfo=timezone.utc)
+            datetime.datetime(
+                *self.feed_data["entries"][0]["published_parsed"][:6], tzinfo=timezone.utc)
         )
         self.assertEqual(
             self.rss_processor.RSSPostManagerInstance.fetch(posts[0].pk),
@@ -82,7 +87,8 @@ class TestRSSProcessorView(TestCase):
         self.feed.refresh_from_db()
         self.assertEqual(self.feed.failure_counter, 1)
         self.assertEqual(self.feed.updated, None)
-        self.assertEqual(self.feed.next_fetch, self.feed.last_fetch + datetime.timedelta(minutes=2))
+        self.assertEqual(self.feed.next_fetch,
+                         self.feed.last_fetch + datetime.timedelta(minutes=2))
 
     def test_refresh_failed_second(self):
         self.feed_data["status"] = 0
@@ -94,7 +100,8 @@ class TestRSSProcessorView(TestCase):
         self.feed.refresh_from_db()
         self.assertEqual(self.feed.failure_counter, 2)
         self.assertEqual(self.feed.updated, None)
-        self.assertEqual(self.feed.next_fetch, self.feed.last_fetch + datetime.timedelta(minutes=5))
+        self.assertEqual(self.feed.next_fetch,
+                         self.feed.last_fetch + datetime.timedelta(minutes=5))
 
     def test_refresh_failed_third(self):
         self.feed_data["status"] = 0
@@ -106,7 +113,8 @@ class TestRSSProcessorView(TestCase):
         self.feed.refresh_from_db()
         self.assertEqual(self.feed.failure_counter, 3)
         self.assertEqual(self.feed.updated, None)
-        self.assertEqual(self.feed.next_fetch, self.feed.last_fetch + datetime.timedelta(minutes=8))
+        self.assertEqual(self.feed.next_fetch,
+                         self.feed.last_fetch + datetime.timedelta(minutes=8))
 
     def test_refresh_failed_fourth(self):
         self.feed_data["status"] = 0
@@ -119,5 +127,3 @@ class TestRSSProcessorView(TestCase):
         self.assertEqual(self.feed.failure_counter, 0)
         self.assertEqual(self.feed.updated, None)
         self.assertEqual(self.feed.next_fetch, None)
-
-

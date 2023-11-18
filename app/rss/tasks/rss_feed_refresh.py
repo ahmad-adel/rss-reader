@@ -17,7 +17,7 @@ class RSSFeedRefreshTask(celery.Task):
         with transaction.atomic():
             feeds = RSSFeed.objects.filter(next_fetch__lte=timezone.now())\
                 .exclude(next_fetch=None)\
-                    .select_for_update()
+                .select_for_update()
 
             for feed in feeds:
                 processor.process_feed(feed)

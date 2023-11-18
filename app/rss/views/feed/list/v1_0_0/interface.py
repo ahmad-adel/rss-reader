@@ -16,13 +16,13 @@ class ListInterface:
             dict: contains:
                 feeds (list): list of feed dicts
         """
-        
+
         feed_list = self._get_feed_list()
 
         return {
             "feeds": feed_list,
         }
-    
+
     def _get_feed_list(self) -> list[dict]:
         """Fetches data for each feed, and a flag to indicate whether follows them
 
@@ -33,7 +33,8 @@ class ListInterface:
 
         feed_list = []
         for feed in feeds:
-            is_followed = RSSFeedFollow.objects.filter(user=self.user, feed=feed).exists()
+            is_followed = RSSFeedFollow.objects.filter(
+                user=self.user, feed=feed).exists()
             feed_list.append({
                 "pk": feed.pk,
                 "title": feed.title,

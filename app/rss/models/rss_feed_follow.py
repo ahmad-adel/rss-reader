@@ -5,7 +5,8 @@ from rss.models import RSSFeed
 
 class RSSFeedFollow(models.Model):
     feed = models.ForeignKey(RSSFeed, on_delete=models.CASCADE)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE)
     time = models.DateTimeField(auto_now_add=True)
 
     class Meta:

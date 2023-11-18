@@ -13,7 +13,7 @@ class RSSFeed(models.Model):
 
     def __str__(self):
         return self.title
-    
+
     def set_updated(self, updated):
         self.updated = updated
         self.save()

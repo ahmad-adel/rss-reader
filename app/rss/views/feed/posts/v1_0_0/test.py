@@ -17,12 +17,15 @@ class PostsTestCase(TestCase):
         self.feed_2 = RSSFeed.objects.create(url="feed_url")
 
         for i in range(13):
-            RSSPost.objects.create(feed=self.feed, guid=str(i), published=timezone.now())
+            RSSPost.objects.create(
+                feed=self.feed, guid=str(i), published=timezone.now())
 
         read_post = RSSPost.objects.first()
-        RSSPostRead.objects.create(user=self.user, post=read_post)      # only one read post
+        RSSPostRead.objects.create(
+            user=self.user, post=read_post)      # only one read post
 
-        RSSFeedFollow.objects.create(feed=self.feed_2, user=self.user)      # no posts for followed feed
+        # no posts for followed feed
+        RSSFeedFollow.objects.create(feed=self.feed_2, user=self.user)
 
     def test_success(self):
         body = {}

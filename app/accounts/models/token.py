@@ -16,7 +16,8 @@ class Token(models.Model):
         ('refresh', "Refresh")
     )
     token = models.CharField(max_length=40, primary_key=True, default=hex_uuid)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE)
     creation_time = models.DateTimeField(default=timezone.now)
     type = models.CharField(max_length=40, choices=TOKEN_TYPES, default='auth')
     is_active = models.BooleanField(default=True)
@@ -30,10 +31,12 @@ class Token(models.Model):
         if self.is_active:
             if self.type == 'auth':
                 expiry = settings.AUTH_TOKEN_EXPIRY_SECONDS
-                is_expired = self.creation_time + datetime.timedelta(seconds=expiry) < timezone.now()
+                is_expired = self.creation_time + \
+                    datetime.timedelta(seconds=expiry) < timezone.now()
             else:
                 expiry = settings.REFRESH_TOKEN_EXPIRY_SECONDS
-                is_expired = self.creation_time + datetime.timedelta(seconds=expiry) < timezone.now()
+                is_expired = self.creation_time + \
+                    datetime.timedelta(seconds=expiry) < timezone.now()
 
         return is_expired
 

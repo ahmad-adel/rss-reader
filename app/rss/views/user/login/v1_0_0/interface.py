@@ -26,14 +26,16 @@ class LoginInterface:
         try:
             user = User.objects.get(email=email)
         except:
-            raise InterfaceException("Authentication Failed. Please check your credentials.")
+            raise InterfaceException(
+                "Authentication Failed. Please check your credentials.")
 
         if not user.check_password(password):
-            raise InterfaceException("Authentication Failed. Please check your credentials.")
+            raise InterfaceException(
+                "Authentication Failed. Please check your credentials.")
 
         data = self._process_tokens(user)
         return data
-    
+
     def _process_tokens(self, user: User) -> dict:
         """Revoke any old tokens, and generates a new pair.
 

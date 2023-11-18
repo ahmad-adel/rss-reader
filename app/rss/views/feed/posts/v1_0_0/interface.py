@@ -7,6 +7,7 @@ from typing import Tuple, Union
 from utils.mongo.rss_post_manager import RSSPostManagerInstance
 from utils.interface_exception import InterfaceException
 
+
 class PostsInterface:
     def __init__(self, user) -> None:
         self.user = user
@@ -37,21 +38,22 @@ class PostsInterface:
         is_read = serializer_data.get('is_read')
         is_feed_followed = serializer_data.get('is_feed_followed')
 
-        posts, total_size = self._query_posts(page, page_size, feed_pk, is_read, is_feed_followed)
+        posts, total_size = self._query_posts(
+            page, page_size, feed_pk, is_read, is_feed_followed)
 
         return {
             "posts": posts,
             "total_size": total_size
         }
-    
+
     def _query_posts(
-            self,
-            page: int,
-            page_size: int,
-            feed_pk: Union[int, None],
-            is_read: Union[bool, None],
-            is_feed_followed: Union[bool, None]
-        ) -> Tuple[list[dict], int]:
+        self,
+        page: int,
+        page_size: int,
+        feed_pk: Union[int, None],
+        is_read: Union[bool, None],
+        is_feed_followed: Union[bool, None]
+    ) -> Tuple[list[dict], int]:
         """Fetch queried posts, ordered by descending publishing time
 
         Args:
@@ -68,7 +70,8 @@ class PostsInterface:
             Tuple[list[dict], int]: list of posts and the total number of posts in the DB
         """
         posts = RSSPost.objects.all().order_by("-published")
-        read_post_pks = RSSPostRead.objects.filter(user=self.user).values_list("post__pk", flat=True)
+        read_post_pks = RSSPostRead.objects.filter(
+            user=self.user).values_list("post__pk", flat=True)
 
         if feed_pk:
             if not RSSFeed.objects.filter(pk=feed_pk).exists():
@@ -80,14 +83,15 @@ class PostsInterface:
             posts = posts.filter(pk__in=read_post_pks)
 
         if is_feed_followed:
-            followed_feed_pks = RSSFeedFollow.objects.filter(user=self.user).values_list("feed__pk", flat=True)
+            followed_feed_pks = RSSFeedFollow.objects.filter(
+                user=self.user).values_list("feed__pk", flat=True)
             posts = posts.filter(feed__pk__in=followed_feed_pks)
 
         total_size = posts.count()
 
         posts = self._paginate(posts, page, page_size)
 
-        post_data= self._fetch_post_data(posts, set(read_post_pks))
+        post_data = self._fetch_post_data(posts, set(read_post_pks))
 
         return post_data, total_size
 

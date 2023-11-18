@@ -6,6 +6,7 @@ from rss.models import RSSFeed, RSSPost
 from utils.mongo.rss_post_manager import RSSPostManagerInstance
 from utils.rss.rss_fetcher import RSSFetcher
 
+
 class RSSProcessor:
     def __init__(self, **args) -> None:
         self.RSSPostManagerInstance = RSSPostManagerInstance
@@ -27,7 +28,7 @@ class RSSProcessor:
             print(ex)
             self._implement_backoff(feed, last_fetch)
             return
-        
+
         if feed.updated is None:
             self._initialize_feed_data(feed, feed_data)
 
@@ -54,11 +55,14 @@ class RSSProcessor:
         feed.failure_counter += 1
 
         if feed.failure_counter == 1:
-            feed.next_fetch = last_fetch + datetime.timedelta(minutes=2)    # 2 minute before next retry
+            # 2 minute before next retry
+            feed.next_fetch = last_fetch + datetime.timedelta(minutes=2)
         elif feed.failure_counter == 2:
-            feed.next_fetch = last_fetch + datetime.timedelta(minutes=5)    # 5 minute before next retry
+            # 5 minute before next retry
+            feed.next_fetch = last_fetch + datetime.timedelta(minutes=5)
         elif feed.failure_counter == 3:
-            feed.next_fetch = last_fetch + datetime.timedelta(minutes=8)    # 8 minute before next retry
+            # 8 minute before next retry
+            feed.next_fetch = last_fetch + datetime.timedelta(minutes=8)
         else:
             feed.failure_counter = 0
             feed.next_fetch = None
@@ -102,16 +106,17 @@ class RSSProcessor:
             entries (list[dict]): list of entries (posts) fetched from RSS service
         """
         for entry in entries:
-            post, created = RSSPost.objects.get_or_create(feed=feed, guid=entry["id"])
+            post, created = RSSPost.objects.get_or_create(
+                feed=feed, guid=entry["id"])
 
-            published = datetime.datetime(*entry["published_parsed"][:6]).replace(tzinfo=timezone.utc)
+            published = datetime.datetime(
+                *entry["published_parsed"][:6]).replace(tzinfo=timezone.utc)
             post.set_published(published)
 
             if created:
                 self.RSSPostManagerInstance.insert(post.pk, entry)
             else:
                 self.RSSPostManagerInstance.update_one(post.pk, entry)
-
 
     def _find_deleted_posts(self, feed: RSSFeed, entries: list[dict]) -> list[int]:
         """Find deleted posts, which are the posts in the database but not fetched in the current refresh
@@ -123,7 +128,8 @@ class RSSProcessor:
         Returns:
             list[int]: primary keys of posts to be deleted
         """
-        new_guids = set([entry["id"] for entry in entries])     # set of guids, faster lookup
+        new_guids = set([entry["id"] for entry in entries]
+                        )     # set of guids, faster lookup
         old_posts = RSSPost.objects.filter(feed=feed).values("pk", "guid")
 
         to_be_deleted = []
@@ -132,4 +138,3 @@ class RSSProcessor:
                 to_be_deleted.append(post_data["pk"])
 
         return to_be_deleted
-

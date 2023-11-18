@@ -27,7 +27,7 @@ class RegisterInterface:
         self._register_user(email, password)
 
         return {}
-    
+
     def _register_user(self, email: str, password: str) -> None:
         """Create User and set password
 

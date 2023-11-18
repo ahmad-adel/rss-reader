@@ -10,7 +10,8 @@ class ListTestCase(TestCase):
         self.user = User.objects.create(email='email')
         self.token = Token.objects.create(user=self.user)
         self.feed = RSSFeed.objects.create(url="feed_url")
-        self.feed_follow = RSSFeedFollow.objects.create(user=self.user, feed=self.feed)
+        self.feed_follow = RSSFeedFollow.objects.create(
+            user=self.user, feed=self.feed)
 
     def test_success(self):
         response = self.client.get(

@@ -13,7 +13,8 @@ class RefreshTestCase(TestCase):
         self.user = User.objects.create(
             email='test@user.com',
         )
-        self.refresh_token = Token.objects.create(user=self.user, type='refresh')
+        self.refresh_token = Token.objects.create(
+            user=self.user, type='refresh')
 
     def test_success(self):
         body = {
@@ -43,7 +44,8 @@ class RefreshTestCase(TestCase):
         self.assertEqual(data['message'], "Refresh token invalid.")
 
     def test_expired_token(self):
-        self.refresh_token.creation_time = timezone.now() - datetime.timedelta(seconds=settings.REFRESH_TOKEN_EXPIRY_SECONDS)
+        self.refresh_token.creation_time = timezone.now(
+        ) - datetime.timedelta(seconds=settings.REFRESH_TOKEN_EXPIRY_SECONDS)
         self.refresh_token.save()
         body = {
             'refresh_token': self.refresh_token.token

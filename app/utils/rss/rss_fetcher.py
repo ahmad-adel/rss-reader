@@ -3,6 +3,7 @@ import feedparser
 from datetime import datetime, timezone
 from feedparser.util import FeedParserDict
 
+
 class RSSFetcher:
     @classmethod
     def fetch_by_url(cls, url: str) -> dict:
@@ -43,7 +44,8 @@ class RSSFetcher:
 
         # Convert time struct to datetime object
         updated_time_struct = result_dict["feed"]["updated_parsed"]
-        updated_datetime = datetime(*updated_time_struct[:6]).replace(tzinfo=timezone.utc)
+        updated_datetime = datetime(
+            *updated_time_struct[:6]).replace(tzinfo=timezone.utc)
 
         return {
             "title": result_dict["feed"]["title"],
@@ -51,4 +53,3 @@ class RSSFetcher:
             "updated": updated_datetime,
             "entries": result["entries"],
         }
-
