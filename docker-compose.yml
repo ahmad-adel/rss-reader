@@ -8,7 +8,7 @@ services:
         privileged: true
         restart: always
         volumes:
-            - ./redis-data:/data
+            - ../redis-data:/data
         ports:
             - "::6379:6379"
         networks:
@@ -19,7 +19,7 @@ services:
         container_name: postgres
         image: postgres:12-alpine
         volumes:
-            - ./postgres-data:/var/lib/postgresql/data
+            - ../postgres-data:/var/lib/postgresql/data
         privileged: true
         restart: always
         environment:
@@ -37,7 +37,7 @@ services:
         ports:
             - "27017:27017"
         volumes:
-            - ./mongo-data:/data
+            - ../mongo-data:/data
         networks:
             testing_net:
                 ipv4_address: 172.18.0.12
