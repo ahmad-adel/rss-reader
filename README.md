@@ -396,5 +396,5 @@ components:
 ```
 
 ### Database Schema
-![[schema_1.jpg]]
-![[schema_2.jpg]]
+![1](schema_1.jpg)
+![2](schema_2.jpg)
