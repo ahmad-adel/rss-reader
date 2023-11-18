@@ -10,5 +10,12 @@ class User(AbstractUser):
         verbose_name_plural = 'Users'
         app_label = 'accounts'
 
-    def __str__(self):
-        return self.name
+    def save(self, *args, **kwargs):
+        """If user is being created, email is assigned as username
+        """
+        if not self.pk and not self.is_superuser:
+            self.username = self.email
+        return super().save(*args, **kwargs)
+
+    def __str__(self) -> str:
+        return self.email

@@ -9,7 +9,7 @@ import datetime
 class RefreshTestCase(TestCase):
     def setUp(self):
         self.client = Client()
-        self.url = '/api/v1/authentication/refresh/'
+        self.url = '/api/v1/user/refresh/'
         self.user = User.objects.create(
             email='test@user.com',
         )

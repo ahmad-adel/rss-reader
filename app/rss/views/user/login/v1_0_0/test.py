@@ -5,7 +5,7 @@ from django.test import TestCase, Client
 class LoginTestCase(TestCase):
     def setUp(self):
         self.client = Client()
-        self.url = '/api/v1/authentication/login/'
+        self.url = '/api/v1/user/login/'
         self.user = User.objects.create(
             email='test@user.com',
         )

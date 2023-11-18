@@ -20,7 +20,7 @@ class LoginInterface:
                 access_token (str): user's access token.
                 refresh_token (str): user's refresh token.
         """
-        email = serializer_data['email'].lower()
+        email = serializer_data['email'].lower().strip()
         password = serializer_data['password']
 
         try:
