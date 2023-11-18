@@ -59,10 +59,12 @@ AUTH_USER_MODEL = "accounts.User"
 """
 Celery Configurations
 """
+REDIS_HOST = os.environ.get("REDIS_HOST", "localhost")
+
 CELERY_IMPORTS = ("rss.tasks")
-BROKER_URL = "redis://localhost:6379"
-CELERY_BROKER_URL = "redis://localhost:6379"
-CELERY_RESULT_BACKEND = "redis://localhost:6379"
+BROKER_URL = f"redis://{REDIS_HOST}:6379"
+CELERY_BROKER_URL = f"redis://{REDIS_HOST}:6379"
+CELERY_RESULT_BACKEND = f"redis://{REDIS_HOST}:6379"
 CELERY_ACCEPT_CONTENT = ["application/json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
