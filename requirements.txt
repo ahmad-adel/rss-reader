@@ -19,8 +19,10 @@ dnspython==2.4.2
 feedparser==6.0.10
 idna==3.4
 kombu==5.3.3
+mongomock==4.1.2
 mypy==1.7.0
 mypy-extensions==1.0.0
+packaging==23.2
 prompt-toolkit==3.0.40
 psycopg2-binary==2.9.9
 pymongo==4.6.0
@@ -28,6 +30,7 @@ python-crontab==3.0.0
 python-dateutil==2.8.2
 pytz==2023.3.post1
 requests==2.31.0
+sentinels==1.0.0
 sgmllib3k==1.0.0
 six==1.16.0
 sqlparse==0.4.4

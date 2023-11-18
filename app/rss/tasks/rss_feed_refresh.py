@@ -1,5 +1,4 @@
 import celery
-import datetime
 
 from django.utils import timezone
 from django.db import transaction
@@ -16,7 +15,6 @@ class RSSFeedRefreshTask(celery.Task):
         """
         processor = RSSProcessor()
         with transaction.atomic():
-            # lock to prevent future tasks from making changes before this is done
             feeds = RSSFeed.objects.filter(next_fetch__lte=timezone.now())\
                 .exclude(next_fetch=None)\
                     .select_for_update()

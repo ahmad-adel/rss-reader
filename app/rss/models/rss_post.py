@@ -5,7 +5,11 @@ from rss.models import RSSFeed
 class RSSPost(models.Model):
     feed = models.ForeignKey(RSSFeed, on_delete=models.CASCADE)
     guid = models.CharField(max_length=255, db_index=True)
-    updated = models.DateTimeField(null=True)
+    published = models.DateTimeField(null=True)
+
+    def set_published(self, published):
+        self.published = published
+        self.save()
 
     class Meta:
         verbose_name = 'RSS Post'

@@ -34,16 +34,16 @@ class RSSFetcher:
         """
 
         result_dict = dict(result)
-        
-        if result["bozo"] != False:
-            raise Exception("Invalid Feed Response (False Bozo)")
-        
+
         if not "status" in result or result["status"] != 200:
             raise Exception("Invalid Feed Response (Status not 200)")
 
+        if result["bozo"] != False:
+            raise Exception("Invalid Feed Response (False Bozo)")
+
         # Convert time struct to datetime object
         updated_time_struct = result_dict["feed"]["updated_parsed"]
-        updated_datetime = datetime(*updated_time_struct[:6], tzinfo=timezone.utc)
+        updated_datetime = datetime(*updated_time_struct[:6]).replace(tzinfo=timezone.utc)
 
         return {
             "title": result_dict["feed"]["title"],

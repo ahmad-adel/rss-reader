@@ -3,7 +3,6 @@ from pymongo import MongoClient
 from pymongo.collection import Collection
 from django.conf import settings
 
-
 class RSSPostManager:
     def __init__(self) -> None:
         self.collection_name = "rss_post"
@@ -39,12 +38,12 @@ class RSSPostManager:
             return {}
 
     def update_one(self, post_pk: int, data: dict) -> None:
-        query = {"post_id": str(post_pk)}
-        self.collection.update_one(query,{"$set":{"data": data}})
+        query = {"pk": str(post_pk)}
+        self.collection.update_one(query, {"$set":{"data": data}})
 
     def bulk_delete(self, post_pk_list: list[int]) -> None:
         post_pk_strs = [str(pk) for pk in post_pk_list]
-        query = {'post_id':{'$in': post_pk_strs}}
+        query = {'pk':{'$in': post_pk_strs}}
         self.collection.deleteMany(query)
 
 

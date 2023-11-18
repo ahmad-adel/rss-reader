@@ -7,6 +7,9 @@ from utils.mongo.rss_post_manager import RSSPostManagerInstance
 from utils.rss.rss_fetcher import RSSFetcher
 
 class RSSProcessor:
+    def __init__(self, **args) -> None:
+        self.RSSPostManagerInstance = RSSPostManagerInstance
+
     def process_feed(self, feed: RSSFeed) -> None:
         """Fetches data for a single feed.
         Initialize feed data if it was not fetched before.
@@ -87,7 +90,7 @@ class RSSProcessor:
         to_be_deleted = self._find_deleted_posts(feed, entries)
         if to_be_deleted:
             RSSPost.objects.filter(feed=feed, pk__in=to_be_deleted).delete()
-            RSSPostManagerInstance.bulk_delete(to_be_deleted)
+            self.RSSPostManagerInstance.bulk_delete(to_be_deleted)
 
         self._update_posts(feed, entries)
 
@@ -100,10 +103,14 @@ class RSSProcessor:
         """
         for entry in entries:
             post, created = RSSPost.objects.get_or_create(feed=feed, guid=entry["id"])
+
+            published = datetime.datetime(*entry["published_parsed"][:6]).replace(tzinfo=timezone.utc)
+            post.set_published(published)
+
             if created:
-                RSSPostManagerInstance.insert(post.pk, entry)
+                self.RSSPostManagerInstance.insert(post.pk, entry)
             else:
-                RSSPostManagerInstance.update_one(post.pk, entry)
+                self.RSSPostManagerInstance.update_one(post.pk, entry)
 
 
     def _find_deleted_posts(self, feed: RSSFeed, entries: list[dict]) -> list[int]:
