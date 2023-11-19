@@ -133,13 +133,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/List'
+                $ref: '#/components/schemas/ListResponse'
           description: ''
         '422':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/ErrorResponse'
           description: ''
       tags:
       - api
@@ -157,19 +157,19 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Follow'
+              $ref: '#/components/schemas/FollowRequest'
       responses:
         '200':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Follow'
+                $ref: '#/components/schemas/FollowResponse'
           description: ''
         '422':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/ErrorResponse'
           description: ''
       tags:
       - api
@@ -187,19 +187,19 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Posts'
+              $ref: '#/components/schemas/PostsRequest'
       responses:
         '200':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Posts'
+                $ref: '#/components/schemas/PostsResponse'
           description: ''
         '422':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/ErrorResponse'
           description: ''
       tags:
       - api
@@ -217,19 +217,19 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PostReadStatus'
+              $ref: '#/components/schemas/PostReadStatusRequest'
       responses:
         '200':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PostReadStatus'
+                $ref: '#/components/schemas/PostReadStatusResponse'
           description: ''
         '422':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/ErrorResponse'
           description: ''
       tags:
       - api
@@ -247,19 +247,19 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Refresh'
+              $ref: '#/components/schemas/RefreshRequest'
       responses:
         '200':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Refresh'
+                $ref: '#/components/schemas/RefreshResponse'
           description: ''
         '422':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/ErrorResponse'
           description: ''
       tags:
       - api
@@ -277,19 +277,19 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Unfollow'
+              $ref: '#/components/schemas/UnfollowRequest'
       responses:
         '200':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Unfollow'
+                $ref: '#/components/schemas/UnfollowResponse'
           description: ''
         '422':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/ErrorResponse'
           description: ''
       tags:
       - api
@@ -302,19 +302,19 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Login'
+              $ref: '#/components/schemas/LoginRequest'
       responses:
         '200':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Login'
+                $ref: '#/components/schemas/LoginResponse'
           description: ''
         '422':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/ErrorResponse'
           description: ''
       tags:
       - api
@@ -327,19 +327,19 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RefreshToken'
+              $ref: '#/components/schemas/RefreshTokenRequest'
       responses:
         '200':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RefreshToken'
+                $ref: '#/components/schemas/RefreshTokenResponse'
           description: ''
         '422':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/ErrorResponse'
           description: ''
       tags:
       - api
@@ -352,36 +352,56 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Register'
+              $ref: '#/components/schemas/RegisterRequest'
       responses:
         '200':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Register'
+                $ref: '#/components/schemas/RegisterResponse'
           description: ''
         '422':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/ErrorResponse'
           description: ''
       tags:
       - api
 components:
   schemas:
-    List:
+    ListResponse:
       type: object
       properties:
         feeds:
           type: array
           items:
-            type: string
+            type: object
       required:
       - feeds
-    Follow:
+    FollowRequest:
       type: object
-    Posts:
+      properties:
+        pk:
+          type: integer
+      required:
+      - pk
+    FollowResponse:
+      type: object
+    PostsRequest:
+      type: object
+      properties:
+        feed_pk:
+          type: integer
+        is_read:
+          type: boolean
+        is_feed_followed:
+          type: boolean
+        page:
+          type: integer
+        page_size:
+          type: integer
+    PostsResponse:
       type: object
       properties:
         posts:
@@ -393,16 +413,35 @@ components:
       required:
       - posts
       - total_size
-    PostReadStatus:
+    PostReadStatusRequest:
       type: object
-    Refresh:
+      properties:
+        pk:
+          type: integer
+        is_read:
+          type: boolean
+      required:
+      - pk
+      - is_read
+    PostReadStatusResponse:
+      type: object
+    RefreshRequest:
       type: object
       properties:
         pk:
           type: integer
       required:
       - pk
-    RefreshToken:
+    RefreshResponse:
+      type: object
+    RefreshTokenRequest:
+      type: object
+      properties:
+        refresh_token:
+          type: string
+      required:
+      - refresh_token
+    RefreshTokenResponse:
       type: object
       properties:
         access_token:
@@ -412,9 +451,26 @@ components:
       required:
       - access_token
       - refresh_token
-    Unfollow:
+    UnfollowRequest:
       type: object
-    Login:
+      properties:
+        pk:
+          type: integer
+      required:
+      - pk
+    UnfollowResponse:
+      type: object
+    LoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      required:
+      - email
+      - password
+    LoginResponse:
       type: object
       properties:
         access_token:
@@ -424,9 +480,19 @@ components:
       required:
       - access_token
       - refresh_token
-    Register:
+    RegisterRequest:
       type: object
-    Error:
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      required:
+      - email
+      - password
+    RegisterResponse:
+      type: object
+    ErrorResponse:
       type: object
       properties:
         message:
