@@ -61,7 +61,7 @@ Celery Configurations
 """
 REDIS_HOST = os.environ.get("REDIS_HOST", "localhost")
 
-CELERY_IMPORTS = ("rss.tasks")
+CELERY_IMPORTS = ["rss.tasks",]
 BROKER_URL = f"redis://{REDIS_HOST}:6379"
 CELERY_BROKER_URL = f"redis://{REDIS_HOST}:6379"
 CELERY_RESULT_BACKEND = f"redis://{REDIS_HOST}:6379"
