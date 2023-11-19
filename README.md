@@ -109,9 +109,7 @@ DEBUG=<1-or-0>
 - Unit tests are done for the RSSProcessor, and for each endpoint provided by the application.
 - The application container has 3 dependencies: Postgres, Redis & Mongodb
 
-### OpenAPI Specifications:
-You can access the OpenAPI specifications for the endpoints through a public endpoint: `http://<application-host/schema/`
-You can find it below as well:
+### OpenAPI Specifications
 ```
 openapi: 3.0.2
 info:
