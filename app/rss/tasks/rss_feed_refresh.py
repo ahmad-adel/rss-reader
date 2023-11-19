@@ -6,6 +6,7 @@ from rss.models import RSSFeed
 from utils.rss.rss_processor import RSSProcessor
 
 
+@celery.shared_task
 class RSSFeedRefreshTask(celery.Task):
     def run(self, *args, **kwargs):
         """Refresh the RSS feeds that should be refreshed.
