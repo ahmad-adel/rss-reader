@@ -72,7 +72,7 @@ CELERYBEAT_SCHEDULER = "djcelery.schedulers.DatabaseScheduler"
 CELERY_TIMEZONE = "Africa/Cairo"
 CELERYBEAT_SCHEDULE = {
     "refresh_rss_feed": {
-        "task": "rss.tasks.rss_feed_refresh.RSSFeedRefreshTask",
+        "task": "rss.tasks.rss_feed_refresh.rss_feed_refresh_task",
         "schedule": 60,     # every 1 minute
     },
 }
