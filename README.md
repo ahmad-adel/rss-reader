@@ -135,6 +135,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/List'
           description: ''
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: ''
       tags:
       - api
   /api/v1/feed/follow/:
@@ -153,11 +159,17 @@ paths:
             schema:
               $ref: '#/components/schemas/Follow'
       responses:
-        '201':
+        '200':
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Follow'
+          description: ''
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
           description: ''
       tags:
       - api
@@ -177,11 +189,17 @@ paths:
             schema:
               $ref: '#/components/schemas/Posts'
       responses:
-        '201':
+        '200':
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Posts'
+          description: ''
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
           description: ''
       tags:
       - api
@@ -201,11 +219,17 @@ paths:
             schema:
               $ref: '#/components/schemas/PostReadStatus'
       responses:
-        '201':
+        '200':
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/PostReadStatus'
+          description: ''
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
           description: ''
       tags:
       - api
@@ -225,11 +249,17 @@ paths:
             schema:
               $ref: '#/components/schemas/Refresh'
       responses:
-        '201':
+        '200':
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Refresh'
+          description: ''
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
           description: ''
       tags:
       - api
@@ -249,11 +279,17 @@ paths:
             schema:
               $ref: '#/components/schemas/Unfollow'
       responses:
-        '201':
+        '200':
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Unfollow'
+          description: ''
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
           description: ''
       tags:
       - api
@@ -268,11 +304,17 @@ paths:
             schema:
               $ref: '#/components/schemas/Login'
       responses:
-        '201':
+        '200':
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Login'
+          description: ''
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
           description: ''
       tags:
       - api
@@ -285,13 +327,19 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Refresh'
+              $ref: '#/components/schemas/RefreshToken'
       responses:
-        '201':
+        '200':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Refresh'
+                $ref: '#/components/schemas/RefreshToken'
+          description: ''
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
           description: ''
       tags:
       - api
@@ -306,11 +354,17 @@ paths:
             schema:
               $ref: '#/components/schemas/Register'
       responses:
-        '201':
+        '200':
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Register'
+          description: ''
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
           description: ''
       tags:
       - api
@@ -318,39 +372,29 @@ components:
   schemas:
     List:
       type: object
-      properties: {}
+      properties:
+        feeds:
+          type: array
+          items:
+            type: string
+      required:
+      - feeds
     Follow:
       type: object
-      properties:
-        pk:
-          type: integer
-      required:
-      - pk
     Posts:
       type: object
       properties:
-        page:
+        posts:
+          type: array
+          items:
+            type: object
+        total_size:
           type: integer
-          default: 1
-        page_size:
-          type: integer
-          default: 10
-        feed_pk:
-          type: integer
-        is_read:
-          type: boolean
-        is_feed_followed:
-          type: boolean
+      required:
+      - posts
+      - total_size
     PostReadStatus:
       type: object
-      properties:
-        pk:
-          type: integer
-        is_read:
-          type: boolean
-      required:
-      - pk
-      - is_read
     Refresh:
       type: object
       properties:
@@ -361,38 +405,34 @@ components:
     RefreshToken:
       type: object
       properties:
+        access_token:
+          type: string
         refresh_token:
           type: string
-          maxLength: 50
       required:
+      - access_token
       - refresh_token
     Unfollow:
       type: object
-      properties:
-        pk:
-          type: integer
-      required:
-      - pk
     Login:
       type: object
       properties:
-        email:
+        access_token:
           type: string
-        password:
+        refresh_token:
           type: string
       required:
-      - email
-      - password
+      - access_token
+      - refresh_token
     Register:
       type: object
+    Error:
+      type: object
       properties:
-        email:
-          type: string
-        password:
+        message:
           type: string
       required:
-      - email
-      - password
+      - message
 ```
 
 ### Database Schema
