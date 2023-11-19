@@ -8,7 +8,7 @@ from utils.rss.rss_processor import RSSProcessor
 
 @celery.shared_task
 class RSSFeedRefreshTask(celery.Task):
-    def run(self, *args, **kwargs):
+    def run(*args, **kwargs):
         """Refresh the RSS feeds that should be refreshed.
         Feed is refreshed if next_fetch datetime has passed.
         select_for_update() is used to lock the feeds being updated
