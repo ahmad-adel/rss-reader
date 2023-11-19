@@ -4,9 +4,9 @@
 ### Purpose
 This application serves users with RSS feed data.
 ### Prerequisites
-Python 3.11.4
-Docker
-Docker Compose
+- Python 3.11.4
+- Docker
+- Docker Compose
 ### How to run
 1. Clone the repo on your machine
 2. Set your environment file (see next section)
