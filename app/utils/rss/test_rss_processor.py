@@ -6,7 +6,6 @@ from django.test import TestCase
 from django.utils import timezone
 from rss.models import RSSFeed, RSSPost
 from utils.mongo.rss_post_manager import RSSPostManager
-from utils.rss.rss_fetcher import RSSFetcher
 from utils.rss.rss_processor import RSSProcessor
 
 

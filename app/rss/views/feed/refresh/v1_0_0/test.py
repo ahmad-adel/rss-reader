@@ -1,6 +1,7 @@
+import feedparser
+
 from accounts.models import User, Token
 from django.test import TestCase, Client
-from utils.rss.rss_processor import RSSProcessor
 from rss.models import RSSFeed
 
 
@@ -12,7 +13,27 @@ class RefreshTestCase(TestCase):
         self.token = Token.objects.create(user=self.user)
         self.feed = RSSFeed.objects.create(url="feed_url")
 
-        RSSProcessor.process_feed = lambda self, feed: None       # mock RSSProcessor
+        self.feed_data = {
+            "bozo": False,
+            "status": 200,
+            "feed": {
+                "title": "title",
+                "description": "description",
+                "updated_parsed": [1990, 1, 1, 1, 1, 1, 0, 0, 0],
+            },
+            "entries": [
+                {
+                    "id": "post_id",
+                    "published_parsed": [2023, 11, 17, 19, 52, 0, 4, 321, 0],
+                    "field": "value",
+                }
+            ],
+        }
+
+        # Mock RSS fetcher response
+        def mock_rss_fetcher(url: str) -> dict:
+            return self.feed_data
+        feedparser.parse = mock_rss_fetcher
 
     def test_success(self):
         body = {
