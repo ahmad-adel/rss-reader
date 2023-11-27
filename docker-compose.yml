@@ -2,6 +2,29 @@ version: '3'
 
 services:
 
+    rss_reader:
+        container_name: rss_reader
+        build:
+            context: .
+            dockerfile: ./Dockerfile
+        volumes:
+            - ../logs/:/home/ubuntu/logs/
+            - ../nginx/:/var/log/nginx/
+        env_file:
+            - .env
+        depends_on:
+            - redis
+            - postgres
+            - mongo
+        privileged: true
+        restart: always
+        ports:
+            - "::80:80"
+            - "::443:443"
+        networks:
+            testing_net:
+                ipv4_address: 172.18.0.2
+
     redis:
         container_name: redis
         image: redis:7.0.7
